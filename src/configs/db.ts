@@ -1,6 +1,8 @@
 import { config } from "dotenv";
 import mongoose from "mongoose";
 import Redis from 'ioredis'
+import { Queue } from "bullmq";
+
 
 config()
 
@@ -17,5 +19,12 @@ export const dbConnection = async() =>{
 }
 
 //Redis connection
+const emailQueue = new Queue("emailQueue", {
+  connection: {
+    host: process.env.REDIS_HOST, // Your Redis Cloud host
+    port: Number(process.env.REDIS_PORT), // Your Redis Cloud port
+    password: process.env.REDIS_PASS, // Your Redis Cloud password
+  },
+});
 
-
+export default emailQueue;
